@@ -1,0 +1,98 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyPhnTIOeMKgP/3mbhMt4EHw",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/mohan157/ml/blob/main/knn-algorithm\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 2,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "5GJoNj5hLY46",
+        "outputId": "55495268-84f8-4cab-f4b5-8509714cab8e"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Predicted class: A\n"
+          ]
+        }
+      ],
+      "source": [
+        "import math\n",
+        "from collections import Counter\n",
+        "\n",
+        "def euclidean_distance(point1, point2):\n",
+        "    \"\"\"Computes the Euclidean distance between two points.\"\"\"\n",
+        "    distance = 0.0\n",
+        "    for i in range(len(point1)):\n",
+        "        distance += (point1[i] - point2[i]) ** 2\n",
+        "    return math.sqrt(distance)\n",
+        "\n",
+        "def knn(train_data, test_point, k):\n",
+        "    \"\"\"Performs K-Nearest Neighbors classification.\"\"\"\n",
+        "    distances = []\n",
+        "\n",
+        "    for data_point in train_data:\n",
+        "        features = data_point[:-1]\n",
+        "        label = data_point[-1]\n",
+        "        distance = euclidean_distance(features, test_point)\n",
+        "        distances.append((distance, label))\n",
+        "\n",
+        "    distances.sort(key=lambda x: x[0])\n",
+        "    neighbors = distances[:k]\n",
+        "\n",
+        "    labels = [label for _, label in neighbors]\n",
+        "\n",
+        "    return Counter(labels).most_common(1)[0][0]\n",
+        "\n",
+        "\n",
+        "train_data = [\n",
+        "    [2.0, 3.0, 'A'],\n",
+        "    [1.0, 1.0, 'B'],\n",
+        "    [4.0, 5.0, 'A'],\n",
+        "    [7.0, 8.0, 'B'],\n",
+        "    [5.0, 6.0, 'A'],\n",
+        "    [2.0, 6.0, 'A'],\n",
+        "    [5.0, 4.0, 'B'],\n",
+        "    [6.0, 2.0, 'A']\n",
+        "]\n",
+        "\n",
+        "\n",
+        "test_point = [3.0, 3.5]\n",
+        "k = 3\n",
+        "\n",
+        "\n",
+        "prediction = knn(train_data, test_point, k)\n",
+        "print(f'Predicted class: {prediction}')\n"
+      ]
+    }
+  ]
+}
